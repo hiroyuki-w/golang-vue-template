@@ -1,13 +1,21 @@
-version: '3' # composeファイルのバーション指定
+version: '3.7' # composeファイルのバーション指定
+volumes:
+  db-store:
 services:
   golang: 
     tty: true
     build: ./docker/go
+    depends_on:
+      - db
     volumes:
       - ./backend:/go/src/app
+      - ./docker/go/pkg:/go/src/github.com
+      
     ports:
       - "3000"         
     command: bash -c "realize start --server"
+    networks:
+      - default
 
   nginx:
     build: ./docker/nginx
@@ -28,3 +36,14 @@ services:
     tty: true
     stdin_open: true
     command: /bin/sh
+    networks:
+      - default
+  db:
+    build: ./docker/mysql
+    container_name: app_db
+    volumes:
+      - db-store:/var/lib/mysql
+    ports:
+      - 3367:3306
+    networks:
+      - default

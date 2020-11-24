@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+  
+  <a href="/#/">ジャンケン</a>
+      <a href="/#/select">セレクト</a>
     <router-view/>
   </div>
 </template>
